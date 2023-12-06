@@ -37,7 +37,7 @@ function Lists() {
     setEditData((prevState) => {
       return {
         ...prevState,
-        task: e.target.value,
+        [e.target.name]: e.target.value,
       };
     });
   };
@@ -55,7 +55,8 @@ function Lists() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Task name</TableCell>
+                <TableCell>Task Name</TableCell>
+                <TableCell>Task Description</TableCell>
                 <TableCell>Time</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
@@ -63,7 +64,8 @@ function Lists() {
             <TableBody>
               {list.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.task}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.description}</TableCell>
                   <TableCell>{item.time}</TableCell>
                   <TableCell align="right">
                     <Button
@@ -92,8 +94,18 @@ function Lists() {
               label="Enter task name"
               fullWidth
               variant="outlined"
-              name="task"
-              defaultValue={editData?.task}
+              name="title"
+              defaultValue={editData?.title}
+              onChange={handleInputChange}
+            />
+            <TextField
+              id="outlined-basic"
+              label="Enter task description"
+              fullWidth
+              variant="outlined"
+              name="description"
+              defaultValue={editData?.description}
+              sx={{ marginTop: "10px" }}
               onChange={handleInputChange}
             />
 

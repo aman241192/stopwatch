@@ -35,7 +35,7 @@ const Stopwatch = () => {
 
   //   disable save button if task is empty
   useEffect(() => {
-    if (formData.task) {
+    if (formData.title && formData.description) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -87,6 +87,8 @@ const Stopwatch = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log("formData", formData);
+    debugger;
     event.preventDefault();
     dispatch(currentTimeAction(formData));
     setOpenDialog(false);
@@ -145,7 +147,17 @@ const Stopwatch = () => {
               label="Enter task name"
               fullWidth
               variant="outlined"
-              name="task"
+              name="title"
+              onChange={handleInputChange}
+            />
+
+            <TextField
+              id="outlined-basic"
+              label="Enter task description"
+              fullWidth
+              variant="outlined"
+              name="description"
+              sx={{ marginTop: "10px" }}
               onChange={handleInputChange}
             />
 
