@@ -1,0 +1,25 @@
+  .stopwatch-time {
+    margin: auto;
+    text-align: center;
+    color: #de6464;
+    font-size: 80px;
+    max-width: 400px;
+    margin: auto;
+    border: 5px solid #00e7ff;
+    border-radius: 50%;
+    height: 400px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0px 0px 20px 5px #1bceff;
+    animation-name: glow;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    -webkit-animation-timing-function: linear; /* Chrome, Safari, Opera */
+    animation-timing-function: linear;}
+
+@keyframes glow {
+    0%   {box-shadow: 0px 0px 10px 5px #1bceff;}
+    25%  {box-shadow: 0px 0px 20px 5px #1bceff;}
+    50%  {box-shadow: 0px 0px 10px 5px #1bceff;}
+    100% {box-shadow: 0px 0px 20px 5px #1bceff;}
+  }
