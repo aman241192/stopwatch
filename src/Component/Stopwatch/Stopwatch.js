@@ -8,31 +8,39 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
 import { useSelector, useDispatch } from "react-redux";
 import { currentTimeAction } from "../../Slice/counterSlice";
+import Popup from "../Popup/Popup";
 
 const Stopwatch = () => {
   const dispatch = useDispatch();
 
+  //   Use State
   const [openDialog, setOpenDialog] = useState(false);
   const [saveVal, setsaveVal] = useState(0);
-
+  const [disabledRest, setdisabledRest] = useState(false);
   const [formData, setformData] = useState("");
   const [disabled, setDisabled] = useState(true);
-  // state to store time
-  const [time, setTime] = useState(0);
-  // state to check stopwatch running or not
-  const [isRunning, setIsRunning] = useState(false);
+  const [time, setTime] = useState(0); // state to store time
+  const [isRunning, setIsRunning] = useState(false); // state to check stopwatch running or not
 
+  // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
   useEffect(() => {
     let intervalId;
     if (isRunning) {
-      // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
       intervalId = setInterval(() => setTime(time + 1), 10);
     }
     return () => clearInterval(intervalId);
   }, [isRunning, time]);
+
+  //   disable save button if task is empty
+  useEffect(() => {
+    if (formData.task) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [formData]);
 
   // Hours calculation, Minutes, Seconds,Milliseconds
   const hours = Math.floor(time / 360000);
@@ -44,6 +52,11 @@ const Stopwatch = () => {
   const startAndStopHandler = () => {
     setsaveVal(`${hours}:${minutes}:${seconds}:${milliseconds}`);
     setIsRunning(!isRunning);
+    if (isRunning) {
+      setdisabledRest(false);
+    } else {
+      setdisabledRest(true);
+    }
   };
 
   const saveHandler = () => {
@@ -67,18 +80,11 @@ const Stopwatch = () => {
     const { name, value } = event.target;
     setformData((prevState) => ({
       ...prevState,
+      id: Math.random(),
       [name]: value,
       time: saveVal,
     }));
   };
-
-  useEffect(() => {
-    if (formData.task) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [formData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -109,14 +115,17 @@ const Stopwatch = () => {
             >
               {isRunning ? "Pause" : "Start"}
             </Button>
+
             <Button
               variant="contained"
               color="error"
               fullWidth
               onClick={resetHandler}
+              disabled={disabledRest}
             >
               Reset
             </Button>
+
             <Button variant="contained" fullWidth onClick={saveHandler}>
               Save
             </Button>
@@ -124,18 +133,13 @@ const Stopwatch = () => {
         </Box>
       </Container>
 
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Popup
+        title="Enter title"
+        handleClose={handleCloseDialog}
+        openPopup={openDialog}
       >
         <Box padding="20px" width="400px">
           <form onSubmit={handleSubmit}>
-            <Typography variant="h6" marginBottom="10px">
-              Enter title to save task
-            </Typography>
-
             <TextField
               id="outlined-basic"
               label="Enter task name"
@@ -182,7 +186,7 @@ const Stopwatch = () => {
             </Stack>
           </form>
         </Box>
-      </Dialog>
+      </Popup>
     </>
   );
 };

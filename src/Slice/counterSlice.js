@@ -11,8 +11,16 @@ export const counterSlice = createSlice({
     currentTimeAction: (state, action) => {
       state.list.push(action.payload);
     },
-    decrement: (state) => {
-      state.value -= 1;
+    editDataAction: (state, action) => {
+      let edit = state.list.map((item) => {
+        if (item.id == action.payload.id) {
+          return action.payload;
+        } else {
+          return item;
+        }
+      });
+
+      state.list = edit;
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload;
@@ -21,6 +29,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { currentTimeAction } = counterSlice.actions;
+export const { currentTimeAction, editDataAction } = counterSlice.actions;
 
 export default counterSlice.reducer;
